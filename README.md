@@ -1,337 +1,147 @@
 ```c#
-static void Main(string[] args)
+// tömbök előnye, hogy nem kell rengeteg változót létrehoznom, hanem egy
+// változóban letudok tárolni mindent, csak egy mutatóval [index] lehivatkozom
+// az adott elemét. Ez a mutató/index 0-tól a tömb.Length-1ig tud lehivatkozni 
+// tömbbéli elemeket
+int sz1 = 12;
+int sz2 = 33;
+int sz4 = 12;
+
+// int tömb létrehozása. KÖTELEZŐ megadni a tömb hosszát
+int hossz = 3;
+int[] tomb = new int[hossz];
+// így tudunk egy-egy elemét lehivatkozni
+tomb[0] = 12;
+tomb[1] = 33;
+tomb[2] = 12;
+
+// az előző hivatkozást megtehetjük dimanikusabban is for ciklussal
+// 0-tól meg 3ig, amit vagy a hossz változóval kapunk meg vagy a 
+// tomb.Length-1el
+for (int i = 0; i < hossz; i++)
 {
-	// karakterek, string, mint tömb
-	feladat1();
-	feladat2();
-	feladat3();
-	feladat4();
-	feladat5();
-	feladat6();
-	feladat7();
-	feladat8();
-	feladat9();
-	feladat10();
-	feladat11();
-
-	//Új téma: számrendszerek közötti váltás-----------------------------------------------------------------------
-	feladat12();
-
-	// Új téma: tömbök--------------------------------------------------------------------
-	// tömbök fajtái:
-	// 1 dimenziós-->vektor
-	// 2 dimenziós-->matrix
-	// string tömb valójában egy 2 dimenziós tömb:
-	string[] szekreny = new string[] { "sapka", "sál" };
-	Console.WriteLine(szekreny[0][0]); // s <-- emiatt a tulajdonága miatt 2 dimenziós
-	Console.WriteLine(szekreny[0]); // sapka
-	feladat13();
-	feladat14();
-	Console.ReadKey();
+	// dinamikusan feltöltjük a tömb minden elemét konzolból
+	tomb[i] = Convert.ToInt32(Console.ReadLine());
 }
 
-private static void feladat14()
+
+// Ha létre hozunk egy tömbböt, alapértelmezetten nullákkal tölti fel minden elemét
+// primitív típus: int, double, bool, char
+// összetett típus: string, ez referenciát tárol kicsit másképpen működik
+
+// hozzunk létre egy 5 elemű string tömbböt és töltsük fel
+// konzolból bekért ruhaneműkkel
+string[] szekreny = new string[4];
+for (int i = 0; i < szekreny.Length; i++)
 {
-	// töltsön fel egy 10 elemű int tömböt [1,100] random számokkal
-	// majd listázza ki
-	int[] randomSzamok = new int[10];
-	Random random = new Random();
-	for (int i = 0; i < randomSzamok.Length; i++)
-	{
-		randomSzamok[i] = random.Next(100) + 1;
-	}
-	// itt listázzuk ki az értékeit
-	for (int i = 0; i < randomSzamok.Length; i++)
-	{
-		Console.WriteLine(randomSzamok[i]);
-	}
+	Console.Write("helyezd a szekrénybe: ");
+	szekreny[i] = Console.ReadLine();
+}
+// majd ha feltöltöttük kiíratjuk a ruhásszekrény tartalmát
+Console.WriteLine("szekrény tartalma:");
+for (int i = 0; i < szekreny.Length; i++)
+{
+	Console.WriteLine($"- {szekreny[i]}");
 }
 
-private static void feladat13()
+// mátrix/két dimenziós tömb--------------------------------------------
+
+int[,] matrix = new int[5,6];
+// GetLength(0)-->5, azaz mennyi vektorból/1dim tömbböl épül fel a mátrix
+// GetLength(1)-->6, azaz mennyi elemű egy egy vektora/1dim tömbje
+
+// töltsük fel az elkészített mátrixot [-10,10]-es intervallumú számokkal
+Random r = new Random();
+for (int i = 0; i < matrix.GetLength(0); i++)
 {
-	// tölsük fel a szekrény tömböt ruhaneműkkel, majd írassuk ki az elemeit
-	string[] szekreny1 = new string[4];
-	for (int i = 0; i < 4; i++)
+	for (int j = 0; j < matrix.GetLength(1); j++)
 	{
-		Console.Write("Add meg mi kerüljön a szekrénybe: ");
-		szekreny1[i] = Console.ReadLine();
-	}
-	// itt íratjuk ki az elmeit
-	for (int i = 0; i < szekreny1.Length; i++)
-	{
-		Console.WriteLine(szekreny1[i]);
-	}
-
-}
-
-private static void feladat12()
-{
-	// dec2bin: paraméterben egy 10-es számrendszerbeli számot adunk át a függvénynek
-	// és visszatér a 2-es számrendszerbeli értékével
-	string bin = dec2bin(40);
-	// bin2dec: paraméterben egy 2-es számrendszerbeli szöveget adunk át a függvénynek
-	// és visszatér a 10-es számrendszerbeli értékével
-	int dec = bin2dec("101000");
-	// k
-	Console.WriteLine(bin);
-	Console.WriteLine(dec);
-}
-
-private static void feladat11()
-{
-	// titkosító, visszafejtő program
-	string uzenet = "ASZTAL";
-	string titkositottUzenet = titkositas(uzenet, 25);
-	string visszafejtettUzenet = visszafejtes(titkositottUzenet, 25);
-	Console.WriteLine(uzenet); // Eredeti üzenet
-	Console.WriteLine(titkositottUzenet); // Titkosított üzenet
-	Console.WriteLine(visszafejtettUzenet); // viisszafejtett üzenet
-
-}
-
-private static int bin2dec(string bin)
-{
-	int hatvany = bin.Length - 1;
-	int dec = 0;
-	for (int i = 0; i < bin.Length; i++)
-	{
-		if (bin[i] == '1') dec += (int)Math.Pow(2, hatvany);
-		hatvany--;
-	}
-	return dec;
-}
-
-private static string dec2bin(int dec)
-{
-	int hatvany = 0;
-	for (; Math.Pow(2,hatvany+1)<dec; ) hatvany++;
-	int osszeg = 0;
-	string bin = "";
-	;
-	for (int i = hatvany; i >= 0; i--)
-	{
-		if ((osszeg + (int)Math.Pow(2, i)) <= dec)
-		{
-			osszeg += (int)Math.Pow(2, i);
-			bin += "1";
-		}
-		else bin += "0";
-	}
-	return bin;
-}
-
-private static string visszafejtes(string titkositottUzenet, int eltolas)
-{
-	// minden karaktert x értékkel visszatol
-	string visszafejtettUzenet = "";
-	for (int i = 0; i < titkositottUzenet.Length; i++)
-	{
-		visszafejtettUzenet += (char)(titkositottUzenet[i] - eltolas);
-	}
-	;
-	return visszafejtettUzenet;
-}
-
-private static string titkositas(string uzenet, int eltolas)
-{
-	// minden karaktert x értékkel eltol
-	string rejtjelezettUzenet = "";
-	for (int i = 0; i < uzenet.Length; i++)
-	{
-		rejtjelezettUzenet += (char)(uzenet[i] + eltolas);
-	}
-	return rejtjelezettUzenet;
-}
-
-private static void feladat10()
-{
-	// írjuk ki a mondatból a második szót
-	string mondat = "Az ég kék";
-	int spaceSzamlalo = 0;
-	for (int i = 0; spaceSzamlalo<2; i++)
-	{
-		if (spaceSzamlalo == 1 && mondat[i]!=' ')
-		{
-			Console.Write(mondat[i]);
-		}
-		if (mondat[i]==' ') spaceSzamlalo++;
+		matrix[i, j] = r.Next(21)-10; //[-10, 10]
 	}
 }
-
-private static void feladat9()
+// kiíratjuk a mátrix tartalmát ügyelve annak mátrixos nézetére
+for (int i = 0; i < matrix.GetLength(0); i++)
 {
-	// írassuk ki fordítva a nevet, és szóköz mentén tördeljük
-	string nev2 = "Erős Pista";
-
-	for (int i = nev2.Length-1; i >= 0; i--)
+	for (int j = 0; j < matrix.GetLength(1); j++)
 	{
-		if (nev2[i]== ' ')
-		{
-			Console.WriteLine();
-		}
-		else { Console.Write(nev2[i]); }
-	}
-}
-
-private static void feladat8()
-{
-	// ha egy nevet bekérünk szóköz mentén tördeljük
-
-	string nev = "Erős Pista";
-	for (int i = 0; i < nev.Length; i++)
-	{
-		if (nev[i] == ' ')
-		{
-			Console.WriteLine();
-		}
-		else
-		{
-			Console.Write(nev[i]);
-		}
-	}
-}
-
-private static void feladat7()
-{
-	// kérjünk be egy karaktert és döntsük el, hogy szám-e 
-
-	// karaktert a konzolról úgy tudunk kinyerni, hogy felhasználjuk azt a tényt, hogy
-	// minden string i. eleme az karakter. A Console.ReadLine az stringet ad vissza
-	char karakter = Console.ReadLine()[0];
-	// vagy fogom és meghívom az Convert.ToChar konvertáló függvényt
-	char karakter2 = Convert.ToChar(Console.ReadLine());
-	// switch-el kicsit hosszasan lehet megoldani
-	switch ((int)karakter)
-	{
-		case 48:
-		case 49:
-		case 50:
-		case 51:
-		case 52:
-		case 53:
-		case 54:
-		case 55:
-		case 56:
-		case 57:
-			Console.WriteLine("ez egy szám");
-			break;
-		default:
-			Console.WriteLine("karakter");
-			break;
-	}
-	// if-el könnyebben megoldható hogy egy [48,57] intervallumba
-	// ha bele esik a konzolról kinyert karakter, akkor szám, egyébként nem
-	if ((int)karakter >= 48 && (int)karakter <= 57)
-	{
-		Console.WriteLine("ez egy szám");
-	}
-	else
-	{
-		Console.WriteLine("karakter");
-	}
-}
-
-private static void feladat6()
-{
-	// vizsgáljuk meg, hogy a 'k' betűnek mi az indexe a megadott szövegben, 
-	// ha nincs benne, írjuk ki, hogy nem volt benne 'k' betű, ha volt, 
-	// akkor, hogy volt benne.
-	string varazslat = "abrakadabra";
-	int index = -1;
-	for (int i = 0; i < varazslat.Length; i++)
-	{
-		if (varazslat[i] == 'k') index = i;
-	}
-	if (index == -1)
-	{
-		Console.WriteLine("nem volt benne 'k' betű");
-	}
-	else
-	{
-		Console.WriteLine("volt benne 'k' betű");
-	}
-}
-
-private static void feladat5()
-{
-	// járjuk körbe a megadott szöveg minden karakterét,
-	// és írjuk ki azok ASCII kódbéli értékeit szóközzel elválasztva egymás mellé
-	string sz1 = "ablak";
-	for (int i = 0; i < sz1.Length; i++)
-	{
-		Console.Write($"{(int)sz1[i]} ");
+		Console.Write($"{matrix[i, j]}\t");
 	}
 	Console.WriteLine();
 }
+Console.WriteLine(matrix[0, 1]); // 0. sor, 1. oszlop
+// 1. indexű sor 3. indexű elemét hivatkozom le (bal felső sarokban kezdem a számolást)
+Console.WriteLine(matrix[1, 3]);
 
-private static void feladat4()
+// hozzunk létre egy n elemű int tömbböt, az n értékét kérje be konzolból
+// majd töltsük fel [50,100]-es intervallumban lévő számokkal
+int darabSzam = Convert.ToInt32(Console.ReadLine());
+int[] randomTomb = new int[darabSzam];
+Random r = new Random();
+for (int i = 0; i < randomTomb.Length; i++)
 {
-	// ha adott egy mac cím, járjuk körbe a karaktereit,
-	// és ahol '-' (kötőjel) van azt cseréljük ':' (kettőspont)-ra
-	// minden más karaktert változatlanul írjuk ki
-	string mac = "6C-6A-77-44-C8-E3";
-	for (int i = 0; i < mac.Length; i++)
-	{
-		if (mac[i] == '-')
-		{
-			Console.Write(":");
-		}
-		else
-		{
-			Console.Write(mac[i]);
-		}
-	}
-	Console.WriteLine();
+	randomTomb[i] = r.Next(51)+50; //50,100
+}
+// majd írassuk ki egymás mellé az értékeket tabulátorokkal elválasztva
+for (int i = 0; i < randomTomb.Length; i++)
+{
+	Console.Write($"{randomTomb[i]}\t");
 }
 
-private static void feladat3()
+// töltsünk fel egy 5 elemű tömböt konzolról bekért számokkal
+Console.WriteLine("tömb feltöltés");
+int[] tomb = new int[5];
+for (int i = 0; i < tomb.Length; i++)
 {
-	/*
-	 kérjen be egy tetszőleges szöveget. Majd minden második karakterét 
-	 írja ki nagybetűsen.
-	 */
-	string sz = "alma"; // most nem kértem be szöveget, hanem megadtam egyből egy változóba
-	for (int i = 0; i < sz.Length; i++)
-	{
-		if (i % 2 == 0)
-		{
-			Console.Write(sz[i]);
-		}
-		else
-		{
-			Console.Write((char)(sz[i] - 32));
-		}
-	}
-	Console.WriteLine();
+	Console.Write($"{i+1}. szám: ");
+	tomb[i] =Convert.ToInt32(Console.ReadLine());
 }
+// majd számoljuk meg, hogy mennyi pozitív és mennyi negatív szám van benne
+int pozitivSzamlalo = 0;
+int negativSzamlalo = 0;
+for (int i = 0; i < tomb.Length; i++)
+{
+	if (tomb[i] >= 0) pozitivSzamlalo++;
+	else negativSzamlalo++;
+}
+Console.WriteLine($"Ennyi pozitív: {pozitivSzamlalo}");
+Console.WriteLine($"Ennyi pozitív: {negativSzamlalo}");
 
-private static void feladat2()
-{
-	// kérjen be egy tetszőleges szöveget. Majd csak minden második karakterét 
-	// írja ki.
-	string sz = "kisebb";
-	for (int i = 1; i < sz.Length; i += 2)
-	{
-		Console.Write(sz[i]);
-	}
-	Console.WriteLine();
-}
 
-private static void feladat1()
+// 5 elemű int tömböt töltsünk fel [10,50] intervallumban véletlenszerűen
+// legnagyobb és legkisebb érték?
+int[] tomb2 = new int[5];
+Random random = new Random();
+// feltöltöttük [10,50] intervallumbéli számokkal
+for (int i = 0; i < tomb2.Length; i++)
 {
-	/*
-	 Kérjen be egy kisbetűs teljes nevet (vezeteknev keresztnev). 
-	Majd írja ki a monogramját, nagybetűsen, pontokkal tűzdelve. Bármilyen
-	hosszabb, rövidebb névre működjön. pl.: Kiss Pista --> K.P.
-	 */
-	string teljesNev = Console.ReadLine();
-	Console.Write($"{(char)(teljesNev[0] - 32)}.");
-	for (int i = 0; i < teljesNev.Length; i++)
+	tomb2[i] = random.Next(41)+10;
+}
+// kiírattuk a tömb tartalmát egymás mellé szóközökkel elválasztva
+for (int i = 0; i < tomb2.Length; i++)
+{
+	Console.Write($"{tomb2[i]} ");
+}
+Console.WriteLine();
+// megkerestük a legkisebbet és a legnagyobbat
+int max = tomb2[0];
+int min = tomb2[0];
+for (int i = 0; i < tomb2.Length; i++)
+{
+	// összevetem hogy vajon a jelenlegi maximum értéktöl a tömb i. eleme nagyobb?
+	// mert ha igen, akkor legyen az az új max érték
+	if (max<tomb2[i])
 	{
-		if (teljesNev[i] == ' ')
-		{
-			Console.WriteLine($"{(char)(teljesNev[i + 1] - 32)}.");
-		}
+		max = tomb2[i];
+	}
+	// ugyan az a logika mint a max-nél, csak itt azt nézzük,
+	// hogy az aktuális min-nél van-e kisebb a tömbben
+	if (min > tomb2[i])
+	{
+		min = tomb2[i];
 	}
 }
+// kiíratom a maximum értéket
+Console.WriteLine(max);
+
+Console.ReadKey();
 ```
