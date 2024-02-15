@@ -1,246 +1,434 @@
 ```c#
 static void Main(string[] args)
 {
-	// ismetles();
-	// vektorokIsm();
-	// matrixIsm();
-
-	// PROGRAMOZÁSI TÉTELEK
-	// gyakran használt algoritmusok a programozásban
-	// tömbökkel kapcsolatos algoritmus (általában)
-
-
-	// osszegzesTetele();
-	// osszegzesTetele1Feladat();
-
-	// megszamlalasTetele();
-	// megszamlalasTetele1Feladat();
-
-	// eldontesTetele();
-	// eldontesTetele1Feladat();
+	// Programozási tételek/ nevezetes algoritmusok
+	// ISMÉTLÉS
+	osszegzesTetele();
+	megszamlalasTetele();
+	eldontesTetele();
+	matrix();
+	// feladatok
 	komplex();
+	komplex1();
+	komplex2();
+	komplex3();
 	Console.ReadKey();
+}
+
+private static void komplex3()
+{
+	int[] tomb = new int[] { 3, 8, -2, 5, 0, 10, -7, 4, 9 };
+
+	feladat1(tomb);
+	feladat2(tomb);
+	feladat3(tomb);
+	feladat4(tomb);
+}
+
+/// <summary>
+/// mennyi az átlaguk
+/// </summary>
+private static void feladat4(int[] tomb)
+{
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg += tomb[i];
+	}
+	double atlag = osszeg / (double)tomb.Length;
+	Console.WriteLine(Math.Round(atlag,2));
+}
+
+/// <summary>
+/// van-e benne pozitív szám
+/// </summary>
+private static void feladat3(int[] tomb)
+{
+	bool vanE = false;
+	int i = 0;
+	while (vanE == false && i < tomb.Length)
+	{
+		if (tomb[i] >= 0) vanE = true;
+		i++;
+	}
+	Console.WriteLine(vanE ? "van" : "nincs" + "benne pozitív szám");
+}
+
+/// <summary>
+/// van-e benne páros szám
+/// </summary>
+private static void feladat2(int[] tomb)
+{
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<tomb.Length)
+	{
+		if (tomb[i] % 2 == 0) vanE = true;
+		i++;
+	}
+	Console.WriteLine(vanE?"van":"nincs" +"benne páros szám");
+}
+
+/// <summary>
+/// páratlan számok darabszám
+/// </summary>
+private static void feladat1(int[] tomb)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		if (tomb[i] % 2 != 0) szamlalo++;
+	}
+	Console.WriteLine(szamlalo);
+}
+
+private static void komplex2()
+{
+	string[] tomb = new string[] { "alma", "körte", "narancs", "szilva", "Mandarin" };
+	feladat1(tomb);
+	feladat2(tomb);
+	feladat3(tomb);
+	feladat4(tomb);
+	feladat5(tomb);
+}
+
+/// <summary>
+/// mennyi az átlagos hosszuk a szövegeknek
+/// 2 tizedesre
+/// </summary>
+private static void feladat5(string[] tomb)
+{
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg += tomb[i].Length;
+	}
+	double atlag = osszeg / (double)tomb.Length;
+	Console.WriteLine(Math.Round(atlag, 2));
+}
+
+/// <summary>
+///  nagybetűvel kezdődő szavak száma
+/// </summary>
+private static void feladat4(string[] tomb)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		if(tomb[i][0]>='A' && tomb[i][0] <= 'Z')
+		{
+			szamlalo++;
+		}
+	}
+	Console.WriteLine(szamlalo);
+}
+
+/// <summary>
+/// van-e páros hosszúságú szó
+/// </summary>
+private static void feladat3(string[] tomb)
+{
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<tomb.Length)
+	{
+		if (tomb[i].Length % 2 == 0) vanE = true;
+		i++;
+	}
+	if (vanE) Console.WriteLine("volt páros hosszúságú szó");
+	else Console.WriteLine("nem volt olyan");
+}
+
+/// <summary>
+/// van-e szilva a tömbben
+/// </summary>
+private static void feladat2(string[] tomb)
+{
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<tomb.Length)
+	{
+		if (tomb[i] == "szilva") vanE = true;
+		i++;
+	}
+	if (vanE) Console.WriteLine("Van szilva benne");
+	else Console.WriteLine("nincs benne szilva");
+}
+
+/// <summary>
+/// mennyi legalább 5 karakteres szó van benne
+/// </summary>
+private static void feladat1(string[] tomb)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		if (tomb.Length >= 5) szamlalo++;
+	}
+	Console.WriteLine(szamlalo);
+}
+
+private static void komplex1()
+{
+	string szoveg = "CASIC nevu kinai ceg megdonti a " +
+		"vasutipar rekordjait. Keszul az 1000km/h-s vonat.";
+	// mennyi betű van benne
+	// mennyi szám van benne
+	// van-e benne /-jel
+	// mennyi kisbetű van benne
+	// hány százaléka szám a teljes szövegnek, 2 tizedesre kerekítve
+	feladat1(szoveg);
+	feladat2(szoveg);
+	feladat3(szoveg);
+	feladat4(szoveg);
+	feladat5(szoveg);
+}
+
+/// <summary>
+///  hány százaléka szám a teljes szövegnek, 2 tizedesre kerekítve
+/// </summary>
+private static void feladat5(string szoveg)
+{
+	int szamDarab = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if(szoveg[i]>='0' && szoveg[i] <= '9')
+		{
+			szamDarab++;
+		}
+	}
+
+	double szazalek = Math.Round((szamDarab / (double)szoveg.Length)*100, 2);
+	Console.WriteLine($"karakter szám százalék: {szazalek}%");
+}
+
+/// <summary>
+/// mennyi kisbetű van benne
+/// </summary>
+private static void feladat4(string szoveg)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if (szoveg[i] >= 'a' && szoveg[i] <= 'z') szamlalo++;
+	}
+	Console.WriteLine(szamlalo);
+}
+
+private static void feladat3(string szoveg)
+{
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<szoveg.Length)
+	{
+		if (szoveg[i] == '/')
+		{
+			vanE = true;
+		}
+		i++;
+	}
+	if (vanE) Console.WriteLine("van / jel");
+	else Console.WriteLine("nincs / jel");
+}
+
+private static void feladat2(string szoveg)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if (szoveg[i] >= '0' && szoveg[i] <= '9') szamlalo++;
+	}
+	Console.WriteLine(szamlalo);
+}
+
+/// <summary>
+/// mennyi betű van benne
+/// </summary>
+private static void feladat1(string szoveg)
+{
+	int szamlalo = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if(
+			(szoveg[i]>='a' && szoveg[i]<='z') || 
+			(szoveg[i] >= 'A' && szoveg[i] <= 'Z')
+		)
+		{
+			szamlalo++;
+		}
+	}
 }
 
 /// <summary>
 /// iskolai versenyen 2 10 fős csoport vett részt. 
 /// mindenki kapott [1,10] pontszámot;
-/// - melyik csoport mennyi pontot szerzett, melyik csoport lett az első helyezett
+/// - melyik csoport mennyi pontot szerzett, 
+/// melyik csoport lett az első helyezett
 /// - mennyi tanuló szerzett az első csoportból 1 pontot.
 /// - volt-e a kettes csoportban aki 10 pontot szerzett
 /// </summary>
-private static void komplex() 
+private static void komplex()
 {
-	// kövi órán megnézzük
+	int[,] matrix = feltolt();
+	feladat1(matrix);
+	feladat2(matrix);
+	feladat3(matrix);
+}
+
+private static int[,] feltolt()
+{
+	int[,] matrix = new int[2, 10];
+
+	Random r = new Random();
+	for (int i = 0; i < matrix.GetLength(0); i++)
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++)
+		{
+			matrix[i, j] = r.Next(10) + 1;
+
+		}
+	}
+	return matrix;
 }
 
 /// <summary>
-/// EZ EGY DOKUMENTÁCIÓS KOMMENT
+/// volt-e a kettes csoportban aki 10 pontot szerzett
 /// </summary>
-private static void eldontesTetele1Feladat()
+private static void feladat3(int[,] matrix)
 {
-	// adott egy string van-e benne szám
-	string szov = "az 1. napom";
-	bool vanBenne = false;
-	for(int i=0; vanBenne==false && i<szov.Length ; i++) // i++ is segít abban hogy hamissá váljon a feltétel
-	{
-		if (szov[i] >= '0' && szov[i] <= '9')
-		{
-			vanBenne = true; // az egyik kilépésifeltételünk
-		}
-	}
-	Console.WriteLine((vanBenne == true) ? "van" : "nincs" + " benne");
-}
-
-private static void eldontesTetele()
-{
-	// van-e a tömbben egy adott tulajdonságú elem
-	// ha talál egy ilyet az algoritmus akk kilép a ciklusból
-
-	int[] tomb = new int[3];
-	tomb[0] = 2;
-	tomb[1] = -3;
-	tomb[2] = 3;
-
-	// VAN-e benne nullától kisebb elem
-	bool vanBenne = false;
+	bool voltE = false;
 	int i = 0;
-	while (vanBenne==false && i<tomb.Length)
+	while (voltE==false && i<matrix.GetLength(1))
 	{
-		if (tomb[i] < 0) vanBenne = true;
+		if (matrix[1, i] == 10)
+		{
+			voltE = true;
+		}
 		i++;
 	}
-	if (vanBenne == true) Console.WriteLine("van benne");
-	else Console.WriteLine("nincs benne");
-
-	vanBenne = false;
-	for (int index=0; vanBenne == false && i < tomb.Length ; index++ ) if (tomb[i] < 0) vanBenne = true;
-	Console.WriteLine((vanBenne==true)?"van":"nincs"+" benne");
+	if (voltE) Console.WriteLine("volt olyan akinek 10 pontja volt");
+	else Console.WriteLine("nem volt olyan a második csoportban");
 }
 
-private static void megszamlalasTetele1Feladat()
+// - mennyi tanuló szerzett az első csoportból 1 pontot.
+private static void feladat2(int[,] matrix)
 {
-	// 12 elemű tömb, [-50,50]. írjuk ki az értékeket egy sorban
-	// mennyi a negatív és mennyi a pozitív
-	Random r = new Random();
-	int[] tomb = new int[12];
-	int negSzamlalo = 0;
-	for (int i = 0; i < tomb.Length; i++)
-	{
-		tomb[i] = r.Next(101) - 50; //[-50,50]
-		Console.Write($"{tomb[i],5}");
-		// Console.Write($"{tomb[i]}\t");
-		// Console.Write($"{tomb[i]} ");
-		if (tomb[i] < 0) negSzamlalo++;
-	}
-	Console.WriteLine();
-	Console.WriteLine($"Pozitív: {tomb.Length-negSzamlalo}db");
-	Console.WriteLine($"Negatív: {negSzamlalo}db");
-}
-
-private static void megszamlalasTetele()
-{
-	// mennyi olyan elem van amely egy bizonyos feltételnek megfelel
-	// összeg=összeg+1;
-	// összeg+=1;
-	// összeg++;
-
-	char[] karTomb = new char[4];
-	karTomb[0] = 'T';
-	karTomb[1] = 'O';
-	karTomb[2] = 'L';
-	karTomb[3] = 'L';
-
-	// mennyi 'L' betű van benne
 	int szamlalo = 0;
-	for (int i = 0; i < karTomb.Length; i++)
+	for (int i = 0; i < matrix.GetLength(1); i++)
 	{
-		if (karTomb[i] == 'L') szamlalo++;
+		if (matrix[0, i] == 1) szamlalo++;
 	}
 	Console.WriteLine(szamlalo);
 }
 
-private static void osszegzesTetele1Feladat()
+/// <summary>
+/// melyik csoport mennyi pontot szerzett, 
+/// melyik csoport lett az első helyezett
+/// </summary>
+private static void feladat1(int[,] matrix)
 {
-	// 12 egész szám [0,100], írjuk ki az elemeit egy sorba
-	// majd 3 tizedes pontosan az átlagukat is adjuk meg
-
-	Random r = new Random();
-	int[] tomb = new int[12];
-	int osszeg = 0;
-	for (int i = 0; i < tomb.Length; i++)
+	int elsoCsoportOsszeg = 0;
+	int masodikCsooportOsszeg = 0;
+	for (int i = 0; i < matrix.GetLength(1); i++)
 	{
-		tomb[i] = r.Next(101); //[0,100]
-		Console.Write($"{tomb[i],5}");
-		osszeg += tomb[i];
+		elsoCsoportOsszeg += matrix[0, i];
+		masodikCsooportOsszeg+= matrix[1, i];
 	}
-	Console.WriteLine();
-	double avg = osszeg / (double)tomb.Length;
-	Console.WriteLine($"átlaguk: {Math.Round(avg,3)}");
-}
-
-private static void osszegzesTetele()
-{
-	// a tömb elemeinek az összege
-	// összeg=összeg+a tömb aktuális eleme
-	// összeg+=a tömb aktuális eleme
-
-	int[] tomb = new int[3];
-	tomb[0] = 10;
-	tomb[1] = 10;
-	tomb[2] = 10;
-
-	int osszeg = 0;
-	for (int i = 0; i < tomb.Length; i++)
+	Console.WriteLine($"Elsőcsoport összeg: {elsoCsoportOsszeg}");
+	Console.WriteLine($"Másodikcsoport összeg: {masodikCsooportOsszeg}");
+	if (elsoCsoportOsszeg > masodikCsooportOsszeg)
 	{
-		osszeg += tomb[i];
-		// vagy:
-		// osszeg =osszeg+ tomb[i];
+		Console.WriteLine("Az elso csoport nyert");
 	}
-	Console.WriteLine($"a tömb eleminek az összege: {osszeg}");
-
-	// karakter tömbbel ugyan ez
-	char[] karakterT = new char[3];
-	karakterT[0] = 'P';
-	karakterT[1] = 'A';
-	karakterT[2] = 'P';
-
-	int ossz = 0;
-	for (int i = 0; i < karakterT.Length; i++)
+	else if (elsoCsoportOsszeg < masodikCsooportOsszeg)
 	{
-		ossz += karakterT[i];
+		Console.WriteLine("A masodik csoport nyert");
 	}
-
-	// stringgel ugyan ez
-	string karakterek = "PAP";
-	int ossz2 = 0;
-	for (int i = 0; i < karakterek.Length; i++)
-	{
-		ossz2 += karakterek[i];
-	}
-	Console.WriteLine(ossz2); // számot-->255
-
-	// karaktertömbből stringet gyártani, ez már összefűzés, konkatenáció
-	// futtatsd le, nézd meg mit ír ki
-	char[] amibol = new char[] { 'P', 'A', 'P' };
-	string amibe = "";
-	for (int i = 0; i < amibol.Length; i++)
-	{
-		amibe += amibol[i]; // konkatenáció, összefűzés
-	}
-	Console.WriteLine(amibe); //szöveget--->PAP
-}
-
-private static void matrixIsm()
-{
-	int[,] matrix = new int[3, 3]; // 3 sor 3 oszlop
-	// töltsük fel [1,10] random számokkal
-	Random r = new Random();
-	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat pörgeti végig, azaz a vektorokat
-	{
-		for (int j = 0; j < matrix.GetLength(1); j++) // egy-egy vektor elemein megy végig (oszlop)
-		{
-			matrix[i, j] = r.Next(10)+1; // [1,10]
-			Console.Write($"{matrix[i,j],5}");
-		}
-		Console.WriteLine(); // segít abban hogy táblázatos alakban jelenjen meg
-	}
-}
-
-private static void vektorokIsm()
-{
-	// [0,10]-ban töltsük fel az
-	// 5 elmű int tömbünket, majd írassuk ki
-	// EGY sorban az értékeit
-	Random r = new Random();
-	int[] tomb = new int[5];
-	for (int i = 0; i < tomb.Length; i++)
-	{
-		tomb[i] = r.Next(11);
-		Console.Write($"{tomb[i],5}");
-	}
-	for (int i = 1; i <= 10; i++) Console.WriteLine(); // dinamikusan készítettünk 10 sortörést is :D
-	
+	else Console.WriteLine("Dontetlen");
 }
 
 /// <summary>
-/// ez egy nagyon szuper metódus használd nyugodtan
+/// mátrix--> az a 2 dimenziós tömb
 /// </summary>
-private static void ismetles()
+private static void matrix()
 {
-	// tömbök előnye h nem kell 3 értékhez három változót léltre hoznom
-	// hanem használhatok tömböt is, segít abban hogy egy változóban le tudjak
-	// hivatkozni tetszőleges hosszúságú éréket
-	int sz1 = 6;
-	int sz2 = 7;
-	int sz3 = 5;
+	int[,] matrix = new int[5,4];
+	Random r = new Random();
+	for (int i = 0; i < matrix.GetLength(0); i++)
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++)
+		{
+			matrix[i, j] = r.Next(11); //[0,10]
+		}
+	}
+	// kiíratás
+	for (int i = 0; i < matrix.GetLength(0); i++)
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++)
+		{
+			Console.Write($"{matrix[i, j]} ");
+		}
+		Console.WriteLine();
+	}
+}
 
-	int[] tomb = new int[3];
-	// ha primitív típusú a tömb alapból a memóriában 0 értékekkel töltődik fel
-	// primitív típsu: int, double, char, bool
+/// <summary>
+/// VAN-e benne a feltételnek megfelelő elem. Ha igen, lépjen ki a ciklusból
+/// </summary>
+private static void eldontesTetele()
+{
+	int[] tomb = new int[] { 1, 3, 5, 6, 7, 8, 9, 10 };
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<tomb.Length)
+	{
+		if (tomb[i] == 3)
+		{
+			vanE = true;
+		}
+		i++;
+	}
+	if (vanE == true) Console.WriteLine("volt benne 3-as");
+	else Console.WriteLine("nem volt benne 3-as");
+}
+
+/// <summary>
+/// megszámláljuk azokat az elemeit a tömbnek amik egy feltételnek megfelelnek
+/// </summary>
+private static void megszamlalasTetele()
+{
+	int[] tomb = new int[] { 3, 3, 2, 1 };
+	int szamlalo = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		Console.WriteLine(tomb[i]);
+		if (tomb[i] == 3) szamlalo++;
 	}
+	Console.WriteLine(szamlalo);
+}
+
+/// <summary>
+/// össze kell adni a tömb értékeit
+/// </summary>
+private static void osszegzesTetele()
+{
+	int[] tomb = new int[3];
+	tomb[0] = 3;
+	tomb[1] = 3;
+	tomb[2] = 3;
+
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg += tomb[i];
+	}
+	Console.WriteLine(osszeg); // 9
+
+	// konkatenáció / szövegösszefűzés
+	string osszeg1 = "";
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg1 += tomb[i];
+	}
+	Console.WriteLine(osszeg1); // 333
 }
 ```
