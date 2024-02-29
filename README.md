@@ -2,216 +2,250 @@
 static void Main(string[] args)
 {
 	feladat1();
-	feladat2();
-	matrixIsm();
-	feladat3();
+	programozasitetelek();
+	matrixGyakorlas();
 	Console.ReadKey();
 }
 
-private static void matrixIsm()
+private static void matrixGyakorlas()
 {
-	int[,] matrix = new int[2,4];
+	/*
+	 Gyűjtsük be 5 csapat 7 meccsének az eredményeit:
+	0-->döntetlen (1 pont), 1-->nyert (3 pont), 2-->vesztett (0 pont)
+	 */
+	int[,] csapatok = new int[5, 7];
 	Random r = new Random();
-	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat nézem végig
+	for (int i = 0; i < csapatok.GetLength(0); i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++)
+		for (int j = 0; j < csapatok.GetLength(1); j++)
 		{
-			// mátrix i. sorának j. elemébe helyezek egy random értéket
-			matrix[i, j] = r.Next(10); // [0,9]
-		}
-	}
-	// kiíratás
-	for (int i = 0; i < matrix.GetLength(0); i++)
-	{
-		for (int j = 0; j < matrix.GetLength(1); j++)
-		{
-			Console.Write($"{matrix[i, j]} ");
+			csapatok[i, j] = r.Next(3);
+			string eredmeny = "";
+			switch (csapatok[i,j])
+			{
+				case 0: eredmeny="döntetlent"; break;
+				case 1: eredmeny="Győzelem"; break;
+				case 2: eredmeny="Vereség"; break;
+			}
+			Console.Write($"{eredmeny,15}");
 		}
 		Console.WriteLine();
 	}
+
+	// hány csapat vesztett a 7. hónapban
+	int hetedikHonapVesztesDbszam = 0;
+	for (int i = 0; i < csapatok.GetLength(0); i++)
+	{
+		int utolsoMeccsAdata = csapatok[i, csapatok.GetLength(1) - 1];
+		if (utolsoMeccsAdata == 2) hetedikHonapVesztesDbszam++;
+	}
+	Console.WriteLine(hetedikHonapVesztesDbszam);
+
+	string[] csapatNevek = new string[]
+	{
+		"Újpest",
+		"Fradi",
+		"DVSC",
+		"DVTK",
+		"DEAC"
+	};
+
+	// melyik csapatnak mennyi pontja van
+	for (int i = 0; i < csapatok.GetLength(0); i++)
+	{
+		int osszpont = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
+		{
+			switch (csapatok[i,j])
+			{
+				case 0: osszpont += 1; break;
+				case 1: osszpont += 3; break;
+			}
+		}
+		Console.WriteLine($"{csapatNevek[i]}: {osszpont}pont");
+	}
+
+	// mennyi győztes meccset játszott a DVSC
+	int gyoztesMeccsekSzama = 0;
+	for (int i = 0; i < csapatok.GetLength(1); i++)
+	{
+		if (csapatok[2, i] == 1) gyoztesMeccsekSzama++;
+	}
+	Console.WriteLine($"DVSC győztes meccsei: {gyoztesMeccsekSzama}");
+
+	// volt-e olyan csapat akinek csak győzelme van
+	bool vanCsakGyoztes = false;
+	for (int i = 0; vanCsakGyoztes==false  && i < csapatok.GetLength(0); i++)
+	{
+		int szamlalo = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
+		{
+			if (csapatok[i, j] == 1)
+				szamlalo++;
+		}
+		if (szamlalo == 7) vanCsakGyoztes = true;
+	}
+	Console.WriteLine(vanCsakGyoztes ? "van" : "nincs");
+
+	// volt-e olyan csapat aki legalább 3x győzött
+	bool vanLeglabb3Gyozelem = false;
+	for (int i = 0; vanLeglabb3Gyozelem == false && i < csapatok.GetLength(0); i++)
+	{
+		int szamlalo = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
+		{
+			if (csapatok[i, j] == 1)
+				szamlalo++;
+		}
+		if (szamlalo >=3) vanLeglabb3Gyozelem = true;
+	}
+	Console.WriteLine(vanLeglabb3Gyozelem ? "van" : "nincs");
+
+	// melyik csapatnak mennyi az átlag pontjai/meccs
+	for (int i = 0; i < csapatok.GetLength(0); i++)
+	{
+		int osszpontszam = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
+		{
+			switch (csapatok[i, j])
+			{
+				case 0: osszpontszam += 1; break;
+				case 1: osszpontszam += 3; break;
+			}
+		}
+		double atlagPerMeccs = osszpontszam / 7.0;
+		Console.WriteLine($"{csapatNevek[i],10} pontszám átlaga / meccs: {Math.Round(atlagPerMeccs)}");
+	}
 }
 
-private static void feladat3()
+private static void programozasitetelek()
 {
-	// egy 14 fős csoportban AAF dolgozatot íratott a tanár minden hónapban.
-	// eltelt 4 hónap. Mindenki kapott egy-egy jegyet [1,5]-ben minden dolgozatra.
-
-	// - mennyi az osztályátlag
-	// - mennyi tanuló áll 5-re (4.6tól)
-	// - melyik tanulónak mennyi az átlaga
-	// - mennyi tanuló van az osztályátlag alatt
-
-	// - van-e olyan tanuló aki bukásra áll? (1.6 alatt)
-	// - van-e olyan tanuló aki csal egyest szerzett a 4 hónap alatt?
-	// - van-e olyan tanuló akinek az első jegye és az utolsó jegye megyegyezik
-	int[,] osztaly = new int[14, 4];
-	Random r = new Random();
-	for (int i = 0; i < osztaly.GetLength(0); i++) // végig megy a tanulókon
+	int[] tomb = new int[] { 1, 2, 3, 4, 5 };
+	string[] mondoka = new string[] { "béka", "ül", "a", "fűben" };
+	// összegzés: tömb elemeit összeadja / konkatenáció (összefűzés)
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
 	{
-		for (int j = 0; j < osztaly.GetLength(1); j++) // egy-egy tanuló havi jegyein megy végig
-		{
-			osztaly[i, j] = r.Next(5)+1;
-		}
+		osszeg += tomb[i];
 	}
-	// tanulók kiíratása alatta a jegyek lebontása hónapra vonatkozóan
-	for (int i = 0; i < osztaly.GetLength(0); i++)
+	Console.WriteLine(osszeg); // összeg
+	string osszefuzes = "";
+	for (int i = 0; i < mondoka.Length; i++)
 	{
-		Console.WriteLine($"{i+1}.tanuló jegyei:");
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			Console.WriteLine($"\t-{j+1}.hónapban: {osztaly[i, j]}");
-		}
+		osszefuzes += mondoka[i] + " ";
 	}
-	// - mennyi az osztályátlag
-	double osztalyOsszeg = 0;
-	for (int i = 0; i < osztaly.GetLength(0); i++)
-	{
-		int tanuloOsszeg = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			tanuloOsszeg += osztaly[i, j];
-		}
-		int jegyekSzama = osztaly.GetLength(1);
-		double tanuloAtlaga = ((double)tanuloOsszeg / jegyekSzama);
-		osztalyOsszeg += tanuloAtlaga;
-	}
-	int tanulokSzama = osztaly.GetLength(0);
-	double osztalyAtlag = osztalyOsszeg / tanulokSzama;
-	Console.WriteLine($"osztály átlag: {Math.Round(osztalyAtlag,2)}");
+	Console.WriteLine(osszefuzes); // string literál képződik
 
-	// - mennyi tanuló áll 5-re (4.6tól)
-	int otosreAlloTanulok = 0;
-	for (int i = 0; i < osztaly.GetLength(0); i++)
+	// megszámlálás: FELTÉTEL mentén számolja meg, mennyi felel meg neki
+	int parosSzamokDb = 0;
+	for (int i = 0; i < tomb.Length; i++)
 	{
-		int tanuloJegyeiOsszeg = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			tanuloJegyeiOsszeg += osztaly[i, j];
-		}
-		int jegyekSzama = osztaly.GetLength(1);
-		double tanuloAtlaga = tanuloJegyeiOsszeg / (double)jegyekSzama;
-		if (tanuloAtlaga >= 4.6) otosreAlloTanulok++;
+		if (tomb[i] % 2 == 0) parosSzamokDb++;
 	}
-	Console.WriteLine($"ennyi db tanuló áll 5-re: {otosreAlloTanulok}");
+	Console.WriteLine(parosSzamokDb);
 
-	// - melyik tanulónak mennyi az átlaga
-	for (int i = 0; i < osztaly.GetLength(0); i++)
+	// eldöntés: FELTÉTEL mentén döntse el, hogy VAN-e
+	// benne olyan elem, ha igen lépjen ki a ciklusból
+	bool van = false;
+	for (int i = 0; van==false && i < tomb.Length; i++)
 	{
-		int tanuloOsszesJegye = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			tanuloOsszesJegye += osztaly[i, j];
-		}
-		int jegyekSzama = osztaly.GetLength(1);
-		double tanuloAtlaga = tanuloOsszesJegye / (double)jegyekSzama;
-		Console.WriteLine($"A(z) {i+1}. tanuló átlaga: {tanuloAtlaga}");
+		if (tomb[i] % 2 == 0) van = true;
 	}
-
-	// - mennyi tanuló van az osztályátlag alatt
-	int tanulokAzOsztalyatlagAlatt = 0;
-	for (int i = 0; i < osztaly.GetLength(0); i++)
-	{
-		int tanuloOsszesJegye = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			tanuloOsszesJegye += osztaly[i, j];
-		}
-		int jegyekSzama = osztaly.GetLength(1);
-		double tanuloAtlaga = tanuloOsszesJegye / (double)jegyekSzama;
-		if (tanuloAtlaga < osztalyAtlag) tanulokAzOsztalyatlagAlatt++;
-	}
-	Console.WriteLine($"Az osztályátalag alatt {tanulokAzOsztalyatlagAlatt}db tanuló van.");
-
+	Console.WriteLine(van ? "van" : "nincs");
 }
 
 private static void feladat1()
 {
-	/*
-	 12 hónapon keresztül tettünk félre változó mennyiségű
-	összeget. 
-	- mennyi összeget tettünk félre egy évben
-	- mennyi pénzt tettünk félre havonta átlagosan
-	 */
-
-	int[] malacpersely = new int[12];
-	Random random = new Random();
-	int osszeg = 0;
-	for (int i = 0; i < malacpersely.Length; i++)
+	// egy 14 fős csoportban AAF dolgozatot íratott a tanár minden hónapban.
+	// eltelt 4 hónap. Mindenki kapott egy-egy jegyet [1,5]-ben minden dolgozatra.
+	int[,] osztaly = new int[14, 4];
+	Random r = new Random();
+	for (int i = 0; i < osztaly.GetLength(0); i++) // 14
 	{
-		malacpersely[i] = random.Next(20000);
-		osszeg = osszeg + malacpersely[i];
-	}
-	Console.WriteLine($"ennyit tettunk felre egy evben: {osszeg}");
-	Console.WriteLine($"atlagosan havonta: {Math.Round(osszeg / 12.0, 2)}");
-
-
-}
-
-private static void feladat2()
-{
-
-	// véletlen 10 elemű számsorozat [-10,10] 
-	int[] szamsorozat = new int[10];
-	Random random = new Random();
-	for (int i = 0; i < szamsorozat.Length; i++)
-	{
-		szamsorozat[i] = random.Next(21) - 10;
-		Console.Write($"{szamsorozat[i]} ");
-	}
-	Console.WriteLine();
-
-	// -mennyi páratlan szám van(megszámlálás)
-	int paratlanszamlalo = 0;
-	for (int i = 0; i < szamsorozat.Length; i++)
-	{
-		if (szamsorozat[i] % 2 != 0)
+		for (int j = 0; j < osztaly.GetLength(1); j++) //4
 		{
-			paratlanszamlalo++;
+			osztaly[i, j] = r.Next(5) + 1;
+			Console.Write($"{osztaly[i,j],5}");
+		}
+		Console.WriteLine();
+	}
+
+	// - melyik tanulónak mennyi az átlaga
+	double osszesAtlag = 0;
+	int mennyiOtosTanulo = 0;
+	for (int i = 0; i < osztaly.GetLength(0); i++)
+	{
+		int osszeg = 0;
+		for (int j = 0; j < osztaly.GetLength(1); j++)
+		{
+			osszeg += osztaly[i, j];
+		}
+		double atlag = osszeg / 4.0;
+		osszesAtlag += atlag;
+		if (atlag >= 4.6) mennyiOtosTanulo++;
+		Console.WriteLine($"{i+1}. az átlaga: {atlag:0.00}");
+	}
+
+	// - mennyi az osztályátlag
+	double osztalyAtlag = osszesAtlag / 14;
+	Console.WriteLine($"{osztalyAtlag:0.00}");
+
+	// - mennyi tanuló áll 5-re (4.6tól)
+	Console.WriteLine(mennyiOtosTanulo);
+
+	// - mennyi tanuló van az osztályátlag alatt
+	int osztalyatlagAlattiTanulokSzama = 0;
+	for (int i = 0; i < osztaly.GetLength(0); i++)
+	{
+		int ossz = 0;
+		for (int j = 0; j < osztaly.GetLength(1); j++)
+		{
+			ossz += osztaly[i, j];
+		}
+		double atlag = ossz / 4.0;
+		if (atlag < osztalyAtlag)
+		{
+			osztalyatlagAlattiTanulokSzama++;
 		}
 	}
-	Console.WriteLine($"Páratlan számok: {paratlanszamlalo}");
+	Console.WriteLine(osztalyatlagAlattiTanulokSzama);
 
-	//  - mennyi 10nél kisebb (megszámlálás)
-	int tizesszamlalo = 0;
-	for (int i = 0; i < szamsorozat.Length; i++)
-	{
-		if (szamsorozat[i]<10)
-		{
-			tizesszamlalo++;
-		}
-	}
-	Console.WriteLine($"Enyi tíznél kisebb szám van: {tizesszamlalo}");
-
-	// -mennyi az átlaguk(összegzés)
-	int osszeg = 0;
-	for (int i = 0; i < szamsorozat.Length; i++)
-	{
-		osszeg += szamsorozat[i];
-	}
-	Console.WriteLine($"Átlag:{Math.Round(osszeg/(double)szamsorozat.Length, 2)}");
-
-	// - van-e benne negatív szám (eldöntés)
+	// - van-e olyan tanuló aki bukásra áll? (1.6 alatt)
 	bool vanE = false;
-	int index = 0;
-	while (vanE==false && index<szamsorozat.Length)
+	for (int i = 0; vanE==false && i < osztaly.GetLength(0); i++)
 	{
-		if (szamsorozat[index++]<0) vanE = true;
+		int ossz = 0;
+		for (int j = 0; j < osztaly.GetLength(1); j++)
+		{
+			ossz += osztaly[i, j];
+		}
+		double atlag = ossz / 4.0;
+		if (atlag < 1.6) vanE = true;
 	}
-	Console.WriteLine((vanE ? "Van" : "Nincs")+" benne negatív szám");
+	Console.WriteLine(vanE ? "van" : "nincs");
 
-	// -van - e az átlagtól nagyobb szám benne. (megszámlálás + eldöntés)
-	int osszeg2 = 0;
-	for (int i = 0; i < szamsorozat.Length; i++)
+	// - van-e olyan tanuló aki csak egyest szerzett a 4 hónap alatt?
+	bool vanE2 = false;
+	for (int i = 0; vanE2 == false && i < osztaly.GetLength(0); i++)
 	{
-		osszeg2 += szamsorozat[i];
+		int ossz = 0;
+		for (int j = 0; j < osztaly.GetLength(1); j++)
+		{
+			ossz += osztaly[i, j];
+		}
+		double atlag = ossz / 4.0;
+		if (atlag == 1) vanE2 = true;
 	}
-	double atlag = osszeg2/szamsorozat.Length;
-	bool vanEh = false;
-	int index2 = 0;
-	while (vanEh==false && index2<szamsorozat.Length)
+	Console.WriteLine(vanE2 ? "van" : "nincs");
+
+	// - van-e olyan tanuló akinek az első jegye és az utolsó jegye megyegyezik
+	bool vanE3 = false;
+	for (int i = 0; vanE3 == false && i < osztaly.GetLength(0); i++)
 	{
-		if (szamsorozat[index2++] > atlag) vanEh = true;
+		int elsoJegy = osztaly[i, 0];
+		int utolsoJegy = osztaly[i, osztaly.GetLength(1) - 1];
+		if (elsoJegy == utolsoJegy) vanE3 = true;
 	}
-	Console.WriteLine((vanEh ? "Van" : "Nincs")+ " benne az átlagtól nagyobb szám");
+	Console.WriteLine(vanE3 ? "van" : "nincs");
 }
 ```
